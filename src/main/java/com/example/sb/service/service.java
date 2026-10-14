@@ -16,9 +16,10 @@ public class service {
 
     private final SaraminCrawler saraminCrawler;
     private final repository jobPostingRepository;
+    private final DiscordWebhookService discordWebhookService; // 1. 웹훅 서비스 주입 추가
 
     /**
-     * 크롤링 후 중복 검증하여 DB 저장
+     * 크롤링 후 중복 검증하여 DB 저장 + 디스코드 알림
      */
     @Transactional
     public int crawlAndSave(String keyword) {
@@ -29,22 +30,32 @@ public class service {
             if (!jobPostingRepository.existsByPlatformAndPlatformJobId(post.getPlatform(), post.getPlatformJobId())) {
                 jobPostingRepository.save(post);
                 savedCount++;
+
+                // 2. 신규 공고 발견 시 디스코드 카드로 전송
+                discordWebhookService.sendJobNotification(
+                        post.getCompanyName(),
+                        post.getTitle(),
+                        post.getCareer(),
+                        post.getRegion(),
+                        post.getTechStacks(),
+                        post.getDetailUrl()
+                );
             }
         }
+
+        // 3. 크롤링 종료 후 전체 결과 요약 메시지 전송
+        if (savedCount > 0) {
+            discordWebhookService.sendMessage("🎉 [" + keyword + "] 크롤링 완료: 총 " + savedCount + "건의 신규 공고가 등록되었습니다.");
+        }
+
         return savedCount;
     }
 
-    /**
-     * 다나와 스타일 조건 필터링 검색
-     */
     @Transactional(readOnly = true)
     public List<domain> searchJobs(List<String> stacks, String career, String platform) {
         return jobPostingRepository.findAll().stream()
-                // 1. 플랫폼 필터
                 .filter(post -> platform == null || platform.isBlank() || post.getPlatform().equalsIgnoreCase(platform))
-                // 2. 경력 필터
                 .filter(post -> career == null || career.isBlank() || post.getCareer().contains(career) || "경력무관".equals(post.getCareer()))
-                // 3. 기술 스택 필터 (체크된 스택 중 하나라도 포함되어 있는지)
                 .filter(post -> {
                     if (stacks == null || stacks.isEmpty()) return true;
                     if (post.getTechStacks() == null || post.getTechStacks().isBlank()) return false;
