@@ -4,123 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IT 채용 공고 맞춤 큐레이션</title>
-    <style>
-        /* 가볍고 깔끔한 다나와 스타일 기본 레이아웃 */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 20px auto;
-            max-width: 1000px;
-            color: #333;
-            background-color: #f9f9f9;
-        }
-        h1 { font-size: 22px; margin-bottom: 15px; }
-
-        /* 수집 버튼 바 */
-        .crawl-bar {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            background: #fff;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            margin-bottom: 15px;
-        }
-        .crawl-btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 4px;
-        }
-        .crawl-btn:disabled { background-color: #ccc; }
-
-        /* 다나와 스타일 필터 박스 */
-        .filter-box {
-            background: #fff;
-            border: 1px solid #ccc;
-            margin-bottom: 20px;
-        }
-        .filter-row {
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            padding: 10px 15px;
-        }
-        .filter-row:last-child { border-bottom: none; }
-        .filter-label {
-            width: 130px;
-            font-weight: bold;
-            color: #555;
-            font-size: 14px;
-        }
-        .filter-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 13px;
-        }
-        .filter-options label {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* 결과 현황 */
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        /* 공고 목록 테이블 */
-        .job-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border: 1px solid #ddd;
-        }
-        .job-table th, .job-table td {
-            border-bottom: 1px solid #eee;
-            padding: 12px 10px;
-            text-align: left;
-            font-size: 14px;
-        }
-        .job-table th {
-            background-color: #f1f3f5;
-            color: #495057;
-        }
-        .badge {
-            display: inline-block;
-            padding: 2px 6px;
-            font-size: 11px;
-            border-radius: 3px;
-            background: #e9ecef;
-            color: #495057;
-        }
-        .badge-saramin { background: #e7f5ff; color: #1971c2; }
-        .badge-work24 { background: #ebfbee; color: #2f9e44; }
-        .tag {
-            display: inline-block;
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 3px;
-            padding: 1px 5px;
-            font-size: 12px;
-            margin-right: 3px;
-            color: #495057;
-        }
-        .job-title-link {
-            text-decoration: none;
-            color: #212529;
-            font-weight: 600;
-        }
-        .job-title-link:hover { text-decoration: underline; color: #007bff; }
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
@@ -143,6 +27,7 @@
             <label><input type="radio" name="platform" value="" checked onchange="filterJobs()"> 전체</label>
             <label><input type="radio" name="platform" value="SARAMIN" onchange="filterJobs()"> 사람인</label>
             <label><input type="radio" name="platform" value="WORK24" onchange="filterJobs()"> 고용24</label>
+            <label><input type="radio" name="platform" value="GAMEJOB" onchange="filterJobs()"> 게임잡</label>
         </div>
     </div>
 
@@ -247,7 +132,9 @@
                 ? job.techStacks.split(',').map(s => `<span class="tag">${s.trim()}</span>`).join('')
                 : '<span style="color:#aaa;">-</span>';
 
-            const badgeClass = job.platform === 'SARAMIN' ? 'badge-saramin' : 'badge-work24';
+            let badgeClass = 'badge-work24';
+            if (job.platform === 'SARAMIN') badgeClass = 'badge-saramin';
+            else if (job.platform === 'GAMEJOB') badgeClass = 'badge-gamejob';
 
             return `
                     <tr>

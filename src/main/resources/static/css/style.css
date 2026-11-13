@@ -1,0 +1,453 @@
+@charset "UTF-8";
+
+/* =========================================================
+   Project-A : IT 채용 공고 맞춤 큐레이션 스타일시트
+   모던 다나와 스타일 대시보드 & 스마트 필터 UI
+   ========================================================= */
+
+:root {
+    --bg-body: #f4f6f9;
+    --bg-surface: #ffffff;
+    --bg-subtle: #f8fafc;
+    --bg-label: #f1f5f9;
+
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --primary-border: #bfdbfe;
+
+    --text-main: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+
+    --border-color: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --saramin-bg: #e0f2fe;
+    --saramin-text: #0369a1;
+    --saramin-border: #bae6fd;
+
+    --work24-bg: #dcfce7;
+    --work24-text: #15803d;
+    --work24-border: #bbf7d0;
+
+    --gamejob-bg: #f3e8ff;
+    --gamejob-text: #7e22ce;
+    --gamejob-border: #e9d5ff;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+    --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+    --transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+    max-width: 1120px;
+    color: var(--text-main);
+    background-color: var(--bg-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================================
+   상단 타이틀 헤더
+   ========================================================= */
+h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--text-main);
+    margin: 0 0 22px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+h1::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 26px;
+    background: linear-gradient(180deg, var(--primary) 0%, #3b82f6 100%);
+    border-radius: 999px;
+}
+
+/* =========================================================
+   1. 상단 수집 컨트롤 바 (.crawl-bar)
+   ========================================================= */
+.crawl-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    background: var(--bg-surface);
+    padding: 16px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+}
+
+.crawl-bar label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-right: 2px;
+}
+
+.crawl-bar input[type="text"],
+#keywordInput {
+    padding: 9px 14px !important;
+    font-size: 14px;
+    color: var(--text-main);
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--border-strong) !important;
+    border-radius: var(--radius-sm);
+    min-width: 220px;
+    outline: none;
+    transition: var(--transition);
+}
+
+.crawl-bar input[type="text"]:focus,
+#keywordInput:focus {
+    background-color: var(--bg-surface);
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.crawl-btn {
+    background: linear-gradient(180deg, #3b82f6 0%, var(--primary) 100%);
+    color: #ffffff;
+    border: none;
+    padding: 9px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.25);
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.crawl-btn:hover:not(:disabled) {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--primary-hover) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.crawl-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.crawl-btn:disabled {
+    background: #cbd5e1;
+    color: #64748b;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+#crawlStatus {
+    font-size: 13px !important;
+    font-weight: 500;
+    color: var(--primary) !important;
+    margin-left: 4px;
+}
+
+/* =========================================================
+   2. 다나와 스타일 스마트 다중 필터 (.filter-box)
+   ========================================================= */
+.filter-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-strong);
+    border-top: 2px solid var(--primary);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 26px;
+    overflow: hidden;
+}
+
+.filter-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0;
+}
+
+.filter-row:last-child {
+    border-bottom: none;
+}
+
+.filter-label {
+    width: 150px;
+    flex-shrink: 0;
+    background-color: var(--bg-label);
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 13.5px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid var(--border-color);
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    font-size: 13.5px;
+    flex: 1;
+}
+
+/* 칩(Pill) 스타일 라디오/체크박스 버튼 */
+.filter-options label {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-subtle);
+    color: var(--text-secondary);
+    font-weight: 500;
+    user-select: none;
+    transition: var(--transition);
+}
+
+.filter-options label:hover {
+    border-color: #94a3b8;
+    background-color: #f1f5f9;
+    color: var(--text-main);
+}
+
+.filter-options input[type="radio"],
+.filter-options input[type="checkbox"] {
+    accent-color: var(--primary);
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* 선택된 필터 칩 강조 (:has 지원 모던 브라우저) */
+.filter-options label:has(input:checked) {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary-hover);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================================================
+   3. 검색 결과 헤더 (.result-header)
+   ========================================================= */
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+
+#jobCount {
+    color: var(--primary);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   4. 공고 목록 테이블 (.job-table)
+   ========================================================= */
+.job-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.job-table th,
+.job-table td {
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 16px;
+    text-align: left;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.job-table th {
+    background-color: var(--bg-label);
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid var(--border-strong);
+    white-space: nowrap;
+}
+
+.job-table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.job-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.job-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* 회사명 스타일 */
+.job-table td strong {
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    word-break: keep-all;
+}
+
+/* 공고 제목 링크 */
+.job-title-link {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 14.5px;
+    line-height: 1.45;
+    display: inline-block;
+    transition: color 0.15s ease;
+}
+
+.job-title-link:hover {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* 경력 / 지역 텍스트 */
+.job-table td small {
+    display: inline-block;
+    margin-top: 3px;
+    font-size: 12px;
+    color: var(--text-muted) !important;
+}
+
+/* =========================================================
+   5. 플랫폼 배지 & 기술스택 태그 (.badge, .tag)
+   ========================================================= */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 9px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border-radius: 6px;
+    background: #f1f5f9;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.badge-saramin {
+    background: var(--saramin-bg);
+    color: var(--saramin-text);
+    border-color: var(--saramin-border);
+}
+
+.badge-work24 {
+    background: var(--work24-bg);
+    color: var(--work24-text);
+    border-color: var(--work24-border);
+}
+
+.badge-gamejob {
+    background: var(--gamejob-bg);
+    color: var(--gamejob-text);
+    border-color: var(--gamejob-border);
+}
+
+.tag {
+    display: inline-block;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 2px 4px 2px 0;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.job-table tbody tr:hover .tag {
+    background: #ffffff;
+    border-color: var(--border-strong);
+    color: var(--text-main);
+}
+
+/* =========================================================
+   6. 반응형 미디어 쿼리 (모바일 / 태블릿 대응)
+   ========================================================= */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 14px 40px;
+    }
+
+    h1 {
+        font-size: 21px;
+    }
+
+    .crawl-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .crawl-bar input[type="text"],
+    #keywordInput,
+    .crawl-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .filter-row {
+        flex-direction: column;
+    }
+
+    .filter-label {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 10px 14px;
+    }
+
+    .filter-options {
+        padding: 12px 14px;
+    }
+
+    .job-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+

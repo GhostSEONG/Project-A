@@ -1,12 +1,15 @@
 package com.example.sb.service;
 
+import com.example.sb.crawler.GameJobCrawler;
 import com.example.sb.crawler.SaraminCrawler;
+import com.example.sb.crawler.work25Crawler;
 import com.example.sb.domain.domain;
 import com.example.sb.repository.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +18,8 @@ import java.util.stream.Collectors;
 public class service {
 
     private final SaraminCrawler saraminCrawler;
+    private final work25Crawler work24Crawler;
+    private final GameJobCrawler gameJobCrawler;
     private final repository jobPostingRepository;
     private final DiscordWebhookService discordWebhookService; // 1. 웹훅 서비스 주입 추가
 
@@ -23,7 +28,10 @@ public class service {
      */
     @Transactional
     public int crawlAndSave(String keyword) {
-        List<domain> crawled = saraminCrawler.crawl(keyword);
+        List<domain> crawled = new ArrayList<>();
+        crawled.addAll(saraminCrawler.crawl(keyword));
+        crawled.addAll(work24Crawler.crawl(keyword));
+        crawled.addAll(gameJobCrawler.crawl(keyword));
         int savedCount = 0;
 
         for (domain post : crawled) {

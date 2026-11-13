@@ -10,6 +10,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,12 +28,13 @@ public class SaraminCrawler {
 
     public List<domain> crawl(String keyword) {
         List<domain> result = new ArrayList<>();
-        String url = "https://www.saramin.co.kr/zf_user/search/recruit?searchword=" + keyword;
+        String url = "https://www.saramin.co.kr/zf_user/search/recruit?searchword=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
 
         try {
             Document doc = Jsoup.connect(url)
                     .userAgent(USER_AGENT)
-                    .timeout(5000)
+                    .timeout(10000)
+                    .maxBodySize(0) // 사람인 페이지가 2MB를 넘어 기본 제한(2MB)이면 공고 목록이 잘림 → 무제한
                     .get();
 
             Elements items = doc.select(".item_recruit");
